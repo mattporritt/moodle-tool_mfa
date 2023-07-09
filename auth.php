@@ -33,7 +33,7 @@ require_login(null, false);
 $context = context_user::instance($USER->id);
 $PAGE->set_context($context);
 $PAGE->set_url('/admin/tool/mfa/auth.php');
-$PAGE->set_pagelayout('secure');
+$PAGE->set_pagelayout('login');
 $PAGE->blocks->show_only_fake_blocks();
 $pagetitle = $SITE->shortname.': '.get_string('mfa', 'tool_mfa');
 $PAGE->set_title($pagetitle);
@@ -97,6 +97,8 @@ $renderer = $PAGE->get_renderer('tool_mfa');
 echo $OUTPUT->header();
 
 \tool_mfa\manager::display_debug_notification();
+
+echo $renderer->verification_form($factor, $form);
 
 echo $OUTPUT->heading(get_string('pluginname', 'factor_'.$factor->name));
 // Check if a notification is required for factor lockouts.

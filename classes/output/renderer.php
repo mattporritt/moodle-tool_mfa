@@ -14,6 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_mfa\output;
+
+use tool_mfa\local\factor\object_factor;
+use tool_mfa\local\form\login_form;
+
 /**
  * MFA renderer.
  *
@@ -22,7 +27,7 @@
  * @copyright   Catalyst IT
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_mfa_renderer extends plugin_renderer_base {
+class renderer extends \plugin_renderer_base {
 
     /**
      * Returns the state of the factor as a badge
@@ -547,5 +552,11 @@ class tool_mfa_renderer extends plugin_renderer_base {
         }
 
         return $result;
+    }
+
+    public function verification_form(object_factor $factor, login_form $form): string {
+
+        $context = [];
+        return $this->render_from_template('tool_mfa/verification_form', $context );
     }
 }
