@@ -23,5 +23,36 @@
     {
     }
 }}
-<h2>{{#str}} verification, tool_mfa {{/str}}</h2>
-<p>{{#str}} verification_desc, tool_mfa {{/str}}</p>
+
+<div >
+    <div class="row">
+        <div class="col-12">
+            <h2>{{#str}} verification, tool_mfa {{/str}}</h2>
+            <p>{{#str}} verification_desc, tool_mfa {{/str}}</p>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-1">
+            <i class="fa fa-envelope fa-fw fa-2x"
+               title="{{logintitle}}"
+               role="img"
+               aria-label="{{logintitle}}"></i>
+        </div>
+        <div class="col-11">
+            <div class="row">
+                <div class="col-12">
+                    <strong>{{logintitle}}</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{logindesc}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    {{{form}}}
+</div>
+

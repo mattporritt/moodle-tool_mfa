@@ -98,15 +98,15 @@ echo $OUTPUT->header();
 
 \tool_mfa\manager::display_debug_notification();
 
-echo $renderer->verification_form($factor, $form);
-
-echo $OUTPUT->heading(get_string('pluginname', 'factor_'.$factor->name));
 // Check if a notification is required for factor lockouts.
 $remattempts = $factor->get_remaining_attempts();
 if ($remattempts < get_config('tool_mfa', 'lockout')) {
     echo $OUTPUT->notification(get_string('lockoutnotification', 'tool_mfa', $remattempts), 'notifyerror');
 }
-$form->display();
+
+echo $renderer->verification_form($factor, $form);
+
+
 
 echo $renderer->guide_link();
 echo $OUTPUT->footer();

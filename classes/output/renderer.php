@@ -556,7 +556,11 @@ class renderer extends \plugin_renderer_base {
 
     public function verification_form(object_factor $factor, login_form $form): string {
 
-        $context = [];
+        $context = [
+                'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
+                'logindesc' => get_string('logindesc', 'factor_'.$factor->name),
+                'form' => $form->render(),
+        ];
         return $this->render_from_template('tool_mfa/verification_form', $context );
     }
 }
