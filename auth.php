@@ -106,7 +106,5 @@ if ($remattempts < get_config('tool_mfa', 'lockout')) {
 
 echo $renderer->verification_form($factor, $form);
 
-
-
 echo $renderer->guide_link();
 echo $OUTPUT->footer();
