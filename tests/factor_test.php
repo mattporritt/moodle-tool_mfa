@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use tool_mfa\plugininfo\factor;
+
 /**
  * Tests for plugininfo.
  *
@@ -22,9 +24,13 @@
  * @copyright   Catalyst IT
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class plugininfo_factor_test extends advanced_testcase {
+class factor_test extends advanced_testcase {
 
-    public function test_get_next_user_factor() {
+    /**
+     * Test get_next_user_login_factor.
+     * @covers \tool_mfa\plugininfo\factor::get_next_user_login_factor
+     */
+    public function test_get_next_user_login_factor() {
 
         $this->resetAfterTest(true);
 
@@ -33,11 +39,11 @@ class plugininfo_factor_test extends advanced_testcase {
         $this->setUser($user);
 
         // Test that with no enabled factors, fallback is returned.
-        $this->assertEquals(\tool_mfa\plugininfo\factor::get_next_user_factor()->name, 'fallback');
+        $this->assertEquals(factor::get_next_user_login_factor()->name, 'fallback');
 
         // Setup enabled totp factor for user.
         set_config('enabled', 1, 'factor_totp');
-        $totpfactor = \tool_mfa\plugininfo\factor::get_factor('totp');
+        $totpfactor = factor::get_factor('totp');
         $totpdata = [
             'secret' => 'fakekey',
             'devicename' => 'fakedevice',
@@ -45,22 +51,22 @@ class plugininfo_factor_test extends advanced_testcase {
         $this->assertNotEmpty($totpfactor->setup_user_factor((object) $totpdata));
 
         // Test that factor now appears (from STATE_UNKNOWN).
-        $this->assertEquals(\tool_mfa\plugininfo\factor::get_next_user_factor()->name, 'totp');
+        $this->assertEquals(factor::get_next_user_login_factor()->name, 'totp');
 
         // Now pass this factor, check for fallback.
-        $totpfactor->set_state(\tool_mfa\plugininfo\factor::STATE_PASS);
-        $this->assertEquals(\tool_mfa\plugininfo\factor::get_next_user_factor()->name, 'fallback');
+        $totpfactor->set_state(factor::STATE_PASS);
+        $this->assertEquals(factor::get_next_user_login_factor()->name, 'fallback');
 
         // Add in a no-input factor.
         set_config('enabled', 1, 'factor_auth');
-        $this->assertEquals(2, count(\tool_mfa\plugininfo\factor::get_enabled_factors()));
+        $this->assertEquals(2, count(factor::get_enabled_factors()));
 
-        $authfactor = \tool_mfa\plugininfo\factor::get_factor('auth');
+        $authfactor = factor::get_factor('auth');
         $this->assertTrue($authfactor->is_enabled());
         $this->assertFalse($authfactor->has_setup());
 
         // Check that the next factor is still the fallback factor.
-        $this->assertEquals(2, count(\tool_mfa\plugininfo\factor::get_active_user_factor_types()));
-        $this->assertEquals(\tool_mfa\plugininfo\factor::get_next_user_factor()->name, 'fallback');
+        $this->assertEquals(2, count(factor::get_active_user_factor_types()));
+        $this->assertEquals(factor::get_next_user_login_factor()->name, 'fallback');
     }
 }

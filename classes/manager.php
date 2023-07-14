@@ -236,7 +236,7 @@ class manager {
             self::passed_enough_factors());
 
         // Check next factor for instant fail (fallback).
-        if (\tool_mfa\plugininfo\factor::get_next_user_factor()->get_state() ==
+        if (\tool_mfa\plugininfo\factor::get_next_user_login_factor()->get_state() ==
             \tool_mfa\plugininfo\factor::STATE_FAIL) {
             // We need to handle a special case here, where someone reached the fallback,
             // If they were able to modify their state on the error page, such as passing iprange,

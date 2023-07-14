@@ -18,6 +18,7 @@ namespace tool_mfa\output;
 
 use tool_mfa\local\factor\object_factor;
 use tool_mfa\local\form\login_form;
+use \html_writer;
 
 /**
  * MFA renderer.
@@ -39,23 +40,23 @@ class renderer extends \plugin_renderer_base {
 
         switch ($state) {
             case \tool_mfa\plugininfo\factor::STATE_PASS:
-                return \html_writer::tag('span', get_string('state:pass', 'tool_mfa'), ['class' => 'badge badge-success']);
+                return html_writer::tag('span', get_string('state:pass', 'tool_mfa'), ['class' => 'badge badge-success']);
 
             case \tool_mfa\plugininfo\factor::STATE_FAIL:
-                return \html_writer::tag('span', get_string('state:fail', 'tool_mfa'), ['class' => 'badge badge-danger']);
+                return html_writer::tag('span', get_string('state:fail', 'tool_mfa'), ['class' => 'badge badge-danger']);
 
             case \tool_mfa\plugininfo\factor::STATE_NEUTRAL:
-                return \html_writer::tag('span', get_string('state:neutral', 'tool_mfa'), ['class' => 'badge badge-warning']);
+                return html_writer::tag('span', get_string('state:neutral', 'tool_mfa'), ['class' => 'badge badge-warning']);
 
             case \tool_mfa\plugininfo\factor::STATE_UNKNOWN:
-                return \html_writer::tag('span', get_string('state:unknown', 'tool_mfa'),
+                return html_writer::tag('span', get_string('state:unknown', 'tool_mfa'),
                         ['class' => 'badge badge-secondary']);
 
             case \tool_mfa\plugininfo\factor::STATE_LOCKED:
-                return \html_writer::tag('span', get_string('state:locked', 'tool_mfa'), ['class' => 'badge badge-error']);
+                return html_writer::tag('span', get_string('state:locked', 'tool_mfa'), ['class' => 'badge badge-error']);
 
             default:
-                return \html_writer::tag('span', get_string('pending', 'tool_mfa'), ['class' => 'badge badge-secondary']);
+                return html_writer::tag('span', get_string('pending', 'tool_mfa'), ['class' => 'badge badge-secondary']);
         }
     }
 
