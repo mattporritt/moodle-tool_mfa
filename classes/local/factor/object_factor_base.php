@@ -39,6 +39,9 @@ abstract class object_factor_base implements object_factor {
      */
     protected $secretmanager;
 
+    /** @var string Factor icon */
+    protected $icon = 'fa-lock';
+
     /**
      * Class constructor
      *
@@ -606,5 +609,14 @@ abstract class object_factor_base implements object_factor {
      */
     public function global_submit($data) {
         return;
+    }
+
+    /**
+     * Get the icon associated with this factor.
+     *
+     * @return string the icon name.
+     */
+    public function get_icon(): string {
+        return $this->icon;
     }
 }

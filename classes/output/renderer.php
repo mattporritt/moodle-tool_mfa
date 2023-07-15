@@ -19,6 +19,7 @@ namespace tool_mfa\output;
 use tool_mfa\local\factor\object_factor;
 use tool_mfa\local\form\login_form;
 use \html_writer;
+use tool_mfa\plugininfo\factor;
 
 /**
  * MFA renderer.
@@ -31,28 +32,28 @@ use \html_writer;
 class renderer extends \plugin_renderer_base {
 
     /**
-     * Returns the state of the factor as a badge
+     * Returns the state of the factor as a badge.
      *
      * @param string $state
-     * @return html
+     * @return string
      */
-    public function get_state_badge($state) {
+    public function get_state_badge(string $state): string {
 
         switch ($state) {
-            case \tool_mfa\plugininfo\factor::STATE_PASS:
+            case factor::STATE_PASS:
                 return html_writer::tag('span', get_string('state:pass', 'tool_mfa'), ['class' => 'badge badge-success']);
 
-            case \tool_mfa\plugininfo\factor::STATE_FAIL:
+            case factor::STATE_FAIL:
                 return html_writer::tag('span', get_string('state:fail', 'tool_mfa'), ['class' => 'badge badge-danger']);
 
-            case \tool_mfa\plugininfo\factor::STATE_NEUTRAL:
+            case factor::STATE_NEUTRAL:
                 return html_writer::tag('span', get_string('state:neutral', 'tool_mfa'), ['class' => 'badge badge-warning']);
 
-            case \tool_mfa\plugininfo\factor::STATE_UNKNOWN:
+            case factor::STATE_UNKNOWN:
                 return html_writer::tag('span', get_string('state:unknown', 'tool_mfa'),
                         ['class' => 'badge badge-secondary']);
 
-            case \tool_mfa\plugininfo\factor::STATE_LOCKED:
+            case factor::STATE_LOCKED:
                 return html_writer::tag('span', get_string('state:locked', 'tool_mfa'), ['class' => 'badge badge-error']);
 
             default:
@@ -61,14 +62,14 @@ class renderer extends \plugin_renderer_base {
     }
 
     /**
-     * Returns a list of factors which a user can add
+     * Returns a list of factors which a user can add.
      *
-     * @return html
+     * @return string
      */
-    public function available_factors() {
+    public function available_factors(): string {
         $html = $this->output->heading(get_string('preferences:availablefactors', 'tool_mfa'), 2);
 
-        $factors = \tool_mfa\plugininfo\factor::get_enabled_factors();
+        $factors = factor::get_enabled_factors();
         foreach ($factors as $factor) {
             // TODO is_configured / is_ready.
             if (!$factor->has_setup() || !$factor->show_setup_buttons()) {
@@ -84,9 +85,9 @@ class renderer extends \plugin_renderer_base {
      * Returns the html section for factor setup
      *
      * @param   object $factor object of the factor class
-     * @return  void
+     * @return  string
      */
-    public function setup_factor($factor) {
+    public function setup_factor(object $factor): string {
         $html = '';
 
         $html .= html_writer::start_tag('div', ['class' => 'card']);
@@ -150,7 +151,7 @@ class renderer extends \plugin_renderer_base {
         ];
         $table->data  = [];
 
-        $factors = \tool_mfa\plugininfo\factor::get_enabled_factors();
+        $factors = factor::get_enabled_factors();
 
         foreach ($factors as $factor) {
             $userfactors = $factor->get_active_user_factors($USER);
@@ -254,7 +255,7 @@ class renderer extends \plugin_renderer_base {
     public function factors_in_use_table($lookback) {
         global $DB;
 
-        $factors = \tool_mfa\plugininfo\factor::get_factors();
+        $factors = factor::get_factors();
 
         // Setup 2 arrays, one with internal names, one pretty.
         $columns = [''];
@@ -389,7 +390,7 @@ class renderer extends \plugin_renderer_base {
     public function factors_locked_table() {
         global $DB;
 
-        $factors = \tool_mfa\plugininfo\factor::get_factors();
+        $factors = factor::get_factors();
 
         $table = new \html_table();
 
@@ -531,7 +532,7 @@ class renderer extends \plugin_renderer_base {
      *
      * In certain situations, includes a script element which adds autosubmission behaviour.
      *
-     * @param HTML_QuickForm_element $element element
+     * @param \HTML_QuickForm_element $element element
      * @param bool $required if input is required field
      * @param bool $advanced if input is an advanced field
      * @param string $error error message to display
@@ -557,10 +558,32 @@ class renderer extends \plugin_renderer_base {
 
     public function verification_form(object_factor $factor, login_form $form): string {
 
+        $availableloginfactors = factor::get_available_user_login_factors();
+        $displaycount = 1;
+        $additionalfactors = [];
+
+        foreach ($availableloginfactors as $loginfactor) {
+            if ($loginfactor->name != $factor->name) {
+                $factordetails = ['name' => $loginfactor->name, 'icon' => $loginfactor->get_icon()];
+                if ($displaycount > 3) {
+                    $factordetails['display'] = 'hide';
+                } else {
+                    $factordetails['display'] = '';
+                }
+                $additionalfactors[] = $factordetails;
+                $displaycount++;
+            }
+        }
+
+        $hasadditionalfactors = ($displaycount > 1) ? true : false;
+
         $context = [
-                'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
-                'logindesc' => get_string('logindesc', 'factor_'.$factor->name),
-                'form' => $form->render(),
+            'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
+            'logindesc' => get_string('logindesc', 'factor_'.$factor->name),
+            'factoricon' => $factor->get_icon(),
+            'form' => $form->render(),
+            'hasadditionalfactors' => $hasadditionalfactors,
+            'additionalfactors' => $additionalfactors,
         ];
         return $this->render_from_template('tool_mfa/verification_form', $context );
     }

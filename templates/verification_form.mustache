@@ -33,7 +33,7 @@
     </div>
     <div class="row align-items-center pb-2">
         <div class="col-1">
-            <i class="fa fa-envelope fa-fw fa-2x"
+            <i class="fa {{factoricon}} fa-fw fa-2x"
                title="{{logintitle}}"
                role="img"
                aria-label="{{logintitle}}"></i>
@@ -55,33 +55,18 @@
 <div>
     {{{form}}}
 </div>
-<div class="mb-2 border-bottom"></div>
-<p><strong>Verify another way</strong></p>
-<button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
-    <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
-        <i class="fa fa-envelope fa-fw fa-2x"
-           title="{{logintitle}}"
-           role="img"
-           aria-label="{{logintitle}}"></i>
-    </span>
-    <span class="activity-add-text">Have a code emailed to you</span>
-</button>
-<button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
-    <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
-        <i class="fa fa-envelope fa-fw fa-2x"
-           title="{{logintitle}}"
-           role="img"
-           aria-label="{{logintitle}}"></i>
-    </span>
-    <span class="activity-add-text">Have a code emailed to you</span>
-</button>
-<button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
-    <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
-        <i class="fa fa-envelope fa-fw fa-2x"
-           title="{{logintitle}}"
-           role="img"
-           aria-label="{{logintitle}}"></i>
-    </span>
-    <span class="activity-add-text">Have a code emailed to you</span>
-</button>
-
+{{#hasadditionalfactors}}
+    <div class="mb-2 border-bottom"></div>
+    <p><strong>Verify another way</strong></p>
+{{/hasadditionalfactors}}
+{{#additionalfactors}}
+    <button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
+        <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
+            <i class="fa {{icon}} fa-fw fa-2x"
+               title="{{logintitle}}"
+               role="img"
+               aria-label="{{logintitle}}"></i>
+        </span>
+        <span class="activity-add-text">Have a code emailed to you</span>
+    </button>
+{{/additionalfactors}}

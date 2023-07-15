@@ -30,6 +30,9 @@ use tool_mfa\local\factor\object_factor_base;
  */
 class factor extends object_factor_base {
 
+    /** @var string Factor icon */
+    protected $icon = 'fa-sms';
+
     /**
      * SMS Factor implementation.
      *

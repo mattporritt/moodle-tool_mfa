@@ -176,7 +176,7 @@ class factor extends \core\plugininfo\base {
      *
      * @return array of factor objects.
      */
-    public function get_all_user_login_factors(): array {
+    public static function get_available_user_login_factors(): array {
         $factors = self::get_active_user_factor_types();
         $loginfactors = [];
         foreach ($factors as $factor) {

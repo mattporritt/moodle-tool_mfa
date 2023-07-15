@@ -69,4 +69,46 @@ class factor_test extends advanced_testcase {
         $this->assertEquals(2, count(factor::get_active_user_factor_types()));
         $this->assertEquals(factor::get_next_user_login_factor()->name, 'fallback');
     }
+
+    /**
+     * Test get available user login factors.
+     * @covers \tool_mfa\plugininfo\factor::get_available_user_login_factors
+     */
+    public function test_get_all_user_login_factors() {
+        $this->resetAfterTest(true);
+
+        // Create and login a user.
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+
+        // Setup enabled totp factor for user.
+        set_config('enabled', 1, 'factor_totp');
+        $totpfactor = factor::get_factor('totp');
+        $totpdata = [
+                'secret' => 'fakekey',
+                'devicename' => 'fakedevice',
+        ];
+
+        $totpfactor->setup_user_factor((object) $totpdata);
+
+        // Setup enabled email factor for user.
+        set_config('enabled', 1, 'factor_email');
+        $emailfactor = factor::get_factor('email');
+        $emaildata = [
+                'email' => 'fakeemail',
+        ];
+        $emailfactor->setup_user_factor((object) $emaildata);
+
+        // Add in a no-input factor.
+        set_config('enabled', 1, 'factor_auth');
+
+        $allloginfactors = factor::get_available_user_login_factors();
+        $this->assertCount(2, $allloginfactors);
+
+        // Alter the state of one factor, to simulate a user ahving tried it.
+        $totpfactor->set_state(factor::STATE_FAIL);
+
+        $allloginfactors = factor::get_available_user_login_factors();
+        $this->assertCount(1, $allloginfactors);
+    }
 }
