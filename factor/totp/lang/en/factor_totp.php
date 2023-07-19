@@ -41,8 +41,11 @@ eg. <ul><li><a href="https://authy.com/download/">Twilio Authy</a></li>
 <li><a href="https://www.microsoft.com/en-us/account/authenticator#getapp">Microsoft Authenticator</a></li>
 <li>Google Authenticator for <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Android</a></li></ul>
 <p>Note: Please ensure your device time and date has been set to "Auto" or "Network provided".</p>';
+$string['logindesc'] = 'Enter verification code for confirmation';
+$string['loginoption'] = 'Use Authenticator application';
 $string['loginskip'] = 'I don\'t have my device';
 $string['loginsubmit'] = 'Verify code';
+$string['logintitle'] = 'Authenticator code';
 $string['pluginname'] = 'Authenticator app';
 $string['privacy:metadata'] = 'The TOTP factor plugin does not store any personal data';
 $string['settings:secretlength'] = 'TOTP secret key length';

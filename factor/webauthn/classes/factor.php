@@ -42,6 +42,9 @@ class factor extends object_factor_base {
     /** @var string User verification setting */
     private $userverification;
 
+    /** @var string Factor icon */
+    protected $icon = 'fa-usb';
+
     /**
      * Create webauthn server.
      *

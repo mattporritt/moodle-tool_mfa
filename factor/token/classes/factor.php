@@ -29,9 +29,6 @@ use tool_mfa\local\secret_manager;
  */
 class factor extends object_factor_base {
 
-    /** @var string Factor icon */
-    protected $icon = 'fa-usb';
-
     /**
      * Token implementation.
      *

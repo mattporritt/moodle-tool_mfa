@@ -564,13 +564,11 @@ class renderer extends \plugin_renderer_base {
 
         foreach ($availableloginfactors as $loginfactor) {
             if ($loginfactor->name != $factor->name) {
-                $factordetails = ['name' => $loginfactor->name, 'icon' => $loginfactor->get_icon()];
-                if ($displaycount > 3) {
-                    $factordetails['display'] = 'hide';
-                } else {
-                    $factordetails['display'] = '';
-                }
-                $additionalfactors[] = $factordetails;
+                $additionalfactors[] = [
+                    'name' => $loginfactor->name,
+                    'icon' => $loginfactor->get_icon(),
+                    'loginoption' => get_string('loginoption', 'factor_'.$loginfactor->name),
+                ];
                 $displaycount++;
             }
         }

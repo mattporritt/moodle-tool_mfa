@@ -102,10 +102,11 @@ class factor_test extends advanced_testcase {
         // Add in a no-input factor.
         set_config('enabled', 1, 'factor_auth');
 
+        // Still should expect 2 factors. As no-input factors are not included.
         $allloginfactors = factor::get_available_user_login_factors();
         $this->assertCount(2, $allloginfactors);
 
-        // Alter the state of one factor, to simulate a user ahving tried it.
+        // Alter the state of one factor, to simulate a user having tried it.
         $totpfactor->set_state(factor::STATE_FAIL);
 
         $allloginfactors = factor::get_available_user_login_factors();
