@@ -60,13 +60,16 @@
     <p><strong>Verify another way</strong></p>
 {{/hasadditionalfactors}}
 {{#additionalfactors}}
-    <button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
-        <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
-            <i class="fa {{icon}} fa-fw fa-2x"
-               title="{{logintitle}}"
-               role="img"
-               aria-label="{{logintitle}}"></i>
-        </span>
-        <span class="activity-add-text mfa-login-option">{{loginoption}}</span>
-    </button>
+    <form id="myForm" method="POST" action="{{{authurl}}}">
+        <input type="hidden" id="{{uniqid}}-factorname" name="factorname" value="{{name}}">
+        <button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
+            <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
+                <i class="fa {{icon}} fa-fw fa-2x"
+                   title="{{logintitle}}"
+                   role="img"
+                   aria-label="{{logintitle}}"></i>
+            </span>
+            <span class="activity-add-text mfa-login-option">{{loginoption}}</span>
+        </button>
+    </form>
 {{/additionalfactors}}

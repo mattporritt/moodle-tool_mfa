@@ -574,6 +574,7 @@ class renderer extends \plugin_renderer_base {
         }
 
         $hasadditionalfactors = ($displaycount > 1) ? true : false;
+        $authurl = new \moodle_url('/admin/tool/mfa/auth.php');
 
         $context = [
             'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
@@ -582,6 +583,7 @@ class renderer extends \plugin_renderer_base {
             'form' => $form->render(),
             'hasadditionalfactors' => $hasadditionalfactors,
             'additionalfactors' => $additionalfactors,
+            'authurl' => $authurl->out(),
         ];
         return $this->render_from_template('tool_mfa/verification_form', $context );
     }

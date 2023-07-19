@@ -61,7 +61,16 @@ $currenturl = new moodle_url('/admin/tool/mfa/auth.php');
 // We have a valid landing here, before doing any actions, clear any redir loop progress.
 \tool_mfa\manager::clear_redirect_counter();
 
-$factor = \tool_mfa\plugininfo\factor::get_next_user_login_factor();
+// If a specific factor was requested, use it.
+$pickedname = optional_param('factorname', false, PARAM_ALPHA);
+$pickedfactor = \tool_mfa\plugininfo\factor::get_factor($pickedname);
+if ($pickedfactor && $pickedfactor->has_input() && $pickedfactor->get_state() == \tool_mfa\plugininfo\factor::STATE_UNKNOWN) {
+    $factor = $pickedfactor;
+} else {
+    // Else, get the next factor that requires input.
+    $factor = \tool_mfa\plugininfo\factor::get_next_user_login_factor();
+}
+
 // If ok, perform form actions for input factor.
 $form = new login_form($currenturl, ['factor' => $factor]);
 if ($form->is_submitted()) {
