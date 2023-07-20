@@ -172,15 +172,15 @@ class factor extends \core\plugininfo\base {
     }
 
     /**
-     * Returns all available factors that require user input.
+     * Returns all factors that require user input.
      *
      * @return array of factor objects.
      */
-    public static function get_available_user_login_factors(): array {
+    public static function get_all_user_login_factors(): array {
         $factors = self::get_active_user_factor_types();
         $loginfactors = [];
         foreach ($factors as $factor) {
-            if ($factor->has_input() && $factor->get_state() == self::STATE_UNKNOWN) {
+            if ($factor->has_input()) {
                 $loginfactors[] = $factor;
             }
 

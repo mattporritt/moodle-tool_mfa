@@ -558,22 +558,33 @@ class renderer extends \plugin_renderer_base {
 
     public function verification_form(object_factor $factor, login_form $form): string {
 
-        $availableloginfactors = factor::get_available_user_login_factors();
-        $displaycount = 1;
+        $allloginfactors = factor::get_all_user_login_factors();
         $additionalfactors = [];
+        $disabledfactors = [];
+        $displaycount = 0;
 
-        foreach ($availableloginfactors as $loginfactor) {
+        foreach ($allloginfactors as $loginfactor) {
             if ($loginfactor->name != $factor->name) {
-                $additionalfactors[] = [
+                $additionalfactor = [
                     'name' => $loginfactor->name,
                     'icon' => $loginfactor->get_icon(),
                     'loginoption' => get_string('loginoption', 'factor_'.$loginfactor->name),
                 ];
+                // We mark the factor as disabled if it is locked.
+                // We store the disabled factors in a separate array so that they can be displayed at the bottom of the template.
+                if ($loginfactor->get_state() == factor::STATE_LOCKED) {
+                    $additionalfactor['disable'] = true;
+                    $disabledfactors[] = $additionalfactor;
+                } else {
+                    $additionalfactors[] = $additionalfactor;
+                }
                 $displaycount++;
             }
         }
 
-        $hasadditionalfactors = ($displaycount > 1) ? true : false;
+        // We merge the additional factors placing the disabled ones last.
+        $alladitionalfactors = array_merge($additionalfactors, $disabledfactors);
+        $hasadditionalfactors = $displaycount > 0;
         $authurl = new \moodle_url('/admin/tool/mfa/auth.php');
 
         $context = [
@@ -582,7 +593,7 @@ class renderer extends \plugin_renderer_base {
             'factoricon' => $factor->get_icon(),
             'form' => $form->render(),
             'hasadditionalfactors' => $hasadditionalfactors,
-            'additionalfactors' => $additionalfactors,
+            'additionalfactors' => $alladitionalfactors,
             'authurl' => $authurl->out(),
         ];
         return $this->render_from_template('tool_mfa/verification_form', $context );

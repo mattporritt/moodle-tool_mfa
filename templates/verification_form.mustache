@@ -60,9 +60,10 @@
     <p><strong>Verify another way</strong></p>
 {{/hasadditionalfactors}}
 {{#additionalfactors}}
-    <form id="myForm" method="POST" action="{{{authurl}}}">
+    <form id="{{uniqid}}-nextfactor" method="POST" action="{{{authurl}}}">
         <input type="hidden" id="{{uniqid}}-factorname" name="factorname" value="{{name}}">
-        <button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2">
+        <button class="btn btn-link text-decoration-none activity-add bulk-hidden d-flex align-items-center p-1 mb-2 {{#disable}}disabled{{/disable}}"
+                type="submit">
             <span class="icon-no-margin icon-size-3 d-flex p-2 mr-2">
                 <i class="fa {{icon}} fa-fw fa-2x"
                    title="{{logintitle}}"
@@ -73,3 +74,10 @@
         </button>
     </form>
 {{/additionalfactors}}
+<div class="d-flex justify-content-center mt-3">
+    <form id="cancelmfa" method="POST" action="{{{authurl}}}">
+        <input type="submit" class="btn btn-secondary"
+               name="cancelmfa" id="cancelmfa_button"
+               value="Cancel login" data-initial-value="Cancel login">
+    </form>
+</div>
