@@ -401,4 +401,40 @@ class factor extends object_factor_base {
             \tool_mfa\plugininfo\factor::STATE_UNKNOWN,
         ];
     }
+
+    /**
+     * Obscure a phone number by replacing all but the first and last character of the local part with a dot.
+     * So the users full email isn't displayed during login.
+     *
+     * @param string $phone The phone number address to obfuscate.
+     * @return string
+     * @throws \coding_exception
+     */
+    protected function obfuscate_phone(string $phone): string {
+        // Remove any non-digit characters.
+        $phone = preg_replace('/\D/', '', $phone);
+
+        $length = strlen($phone);
+        $middledot = "\u{00B7}";
+
+        // Obfuscate all but the first and last digit.
+        if ($length > 2) {
+            $phone = $phone[0] . str_repeat($middledot, $length - 2) . $phone[$length - 1];
+        }
+
+        return $phone;
+    }
+
+    /**
+     * Get the login description associated with this factor.
+     * Override for factors that have a user input.
+     *
+     * @return string The login option.
+     */
+    public function get_login_desc(): string {
+        global $USER;
+        $email = $this->obfuscate_phone($USER->email);
+
+        return get_string('logindesc', 'factor_'.$this->name, $email);
+    }
 }

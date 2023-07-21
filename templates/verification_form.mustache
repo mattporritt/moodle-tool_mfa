@@ -31,24 +31,13 @@
             <p>{{#str}} verification_desc, tool_mfa {{/str}}</p>
         </div>
     </div>
-    <div class="row align-items-center pb-2">
-        <div class="col-1">
-            <i class="fa {{factoricon}} fa-fw fa-2x"
-               title="{{logintitle}}"
-               role="img"
-               aria-label="{{logintitle}}"></i>
+    <div class="d-flex align-items-center pb-2">
+        <div style="flex: 0 0 auto;">
+            <i class="fa {{factoricon}} fa-fw fa-2x" title="{{logintitle}}" role="img" aria-label="{{logintitle}}"></i>
         </div>
-        <div class="col-11 pl-4">
-            <div class="row">
-                <div class="col-12">
-                    <strong>{{logintitle}}</strong>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {{logindesc}}
-                </div>
-            </div>
+        <div style="flex: 1 1 auto; padding-left: 15px;" class="text-wrap">
+            <strong>{{logintitle}}</strong><br>
+            {{logindesc}}
         </div>
     </div>
 </div>

@@ -590,7 +590,7 @@ class renderer extends \plugin_renderer_base {
 
         $context = [
             'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
-            'logindesc' => get_string('logindesc', 'factor_'.$factor->name),
+            'logindesc' => $factor->get_login_desc(),
             'factoricon' => $factor->get_icon(),
             'form' => $form->render(),
             'hasadditionalfactors' => $hasadditionalfactors,

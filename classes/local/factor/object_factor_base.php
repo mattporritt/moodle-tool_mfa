@@ -619,4 +619,14 @@ abstract class object_factor_base implements object_factor {
     public function get_icon(): string {
         return $this->icon;
     }
+
+    /**
+     * Get the login description associated with this factor.
+     * Override for factors that have a user input.
+     *
+     * @return string The login option.
+     */
+    public function get_login_desc(): string {
+        return get_string('logindesc', 'factor_'.$this->name);
+    }
 }

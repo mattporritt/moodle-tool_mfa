@@ -71,9 +71,8 @@ class verification_field extends \MoodleQuickForm_text {
 
         // Force element name to match JS.
         $elementname = 'verificationcode';
-        $elementlabel = get_string('verificationcode', 'tool_mfa');
 
-        return parent::__construct($elementname, $elementlabel, $attributes);
+        return parent::__construct($elementname, '', $attributes);
     }
 
     // @codingStandardsIgnoreStart
