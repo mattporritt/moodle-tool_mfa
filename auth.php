@@ -38,7 +38,7 @@ $PAGE->blocks->show_only_fake_blocks();
 $pagetitle = $SITE->shortname.': '.get_string('mfa', 'tool_mfa');
 $PAGE->set_title($pagetitle);
 
-// The only page action allowed here is a logout if it was requested.
+// Logout if it was requested.
 $logout = optional_param('logout', false, PARAM_BOOL);
 if ($logout) {
     if (!empty($SESSION->wantsurl)) {
@@ -64,8 +64,13 @@ $currenturl = new moodle_url('/admin/tool/mfa/auth.php');
 // If a specific factor was requested, use it.
 $pickedname = optional_param('factorname', false, PARAM_ALPHA);
 $pickedfactor = \tool_mfa\plugininfo\factor::get_factor($pickedname);
+$formfactor = optional_param('factor', false, PARAM_ALPHA);
+
 if ($pickedfactor && $pickedfactor->has_input() && $pickedfactor->get_state() == \tool_mfa\plugininfo\factor::STATE_UNKNOWN) {
     $factor = $pickedfactor;
+} else if ($formfactor) {
+    // Check if a factor was supplied by the form, such as for a form submission
+    $factor = \tool_mfa\plugininfo\factor::get_factor($formfactor);
 } else {
     // Else, get the next factor that requires input.
     $factor = \tool_mfa\plugininfo\factor::get_next_user_login_factor();

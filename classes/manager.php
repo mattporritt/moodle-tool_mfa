@@ -814,14 +814,18 @@ class manager {
 
     /**
      * Gets current user weight, up until first unknown factor.
+     *
+     * @return int $totalweight Total weight of all factors.
      */
-    public static function get_cumulative_weight() {
+    public static function get_cumulative_weight(): int{
         $factors = factor::get_active_user_factor_types();
+        // Factor state is important here, so sort the factors by state.
+        $sortedfactors = factor::sort_factors_by_state($factors, factor::STATE_PASS);
         $totalweight = 0;
-        foreach ($factors as $factor) {
+        foreach ($sortedfactors as $factor) {
             if ($factor->get_state() == factor::STATE_PASS) {
                 $totalweight += $factor->get_weight();
-                // If over 100, break. Dont care about >100.
+                // If over 100, break. Don't care about >100.
                 if ($totalweight >= 100) {
                     break;
                 }

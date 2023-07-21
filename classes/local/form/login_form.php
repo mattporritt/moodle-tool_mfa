@@ -69,6 +69,8 @@ class login_form extends \moodleform {
         $mform = $this->_form;
         $factor = $this->_customdata['factor'];
         $mform = $factor->login_form_definition($mform);
+        // Add a hidden field with the factor name so it is always available.
+        $mform->addElement('hidden', 'factor', $factor->name);
         $this->globalmanager->definition($mform);
     }
 

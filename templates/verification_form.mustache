@@ -76,6 +76,7 @@
 {{/additionalfactors}}
 <div class="d-flex justify-content-center mt-3">
     <form id="cancelmfa" method="POST" action="{{{authurl}}}">
+        <input type="hidden" id="{{uniqid}}-factorname" name="logout" value="true">
         <input type="submit" class="btn btn-secondary"
                name="cancelmfa" id="cancelmfa_button"
                value="Cancel login" data-initial-value="Cancel login">

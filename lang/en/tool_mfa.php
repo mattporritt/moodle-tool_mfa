@@ -72,6 +72,7 @@ $string['guidance'] = 'MFA user guide';
 $string['inputrequired'] = 'User input';
 $string['ipatcreation'] = 'IP address when factor created';
 $string['lastverified'] = 'Last verified';
+$string['locked'] = '{$a} (Unavailable)';
 $string['lockedusersforallfactors'] = 'Locked users: All factors';
 $string['lockedusersforfactor'] = 'Locked users: {$a}';
 $string['lockoutnotification'] = 'You have {$a} verification attempts remaining for this factor.';

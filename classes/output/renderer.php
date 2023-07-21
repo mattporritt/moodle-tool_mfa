@@ -573,6 +573,7 @@ class renderer extends \plugin_renderer_base {
                 // We mark the factor as disabled if it is locked.
                 // We store the disabled factors in a separate array so that they can be displayed at the bottom of the template.
                 if ($loginfactor->get_state() == factor::STATE_LOCKED) {
+                    $additionalfactor['loginoption'] = get_string('locked', 'tool_mfa', $additionalfactor['loginoption']);
                     $additionalfactor['disable'] = true;
                     $disabledfactors[] = $additionalfactor;
                 } else {

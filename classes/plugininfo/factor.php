@@ -294,4 +294,30 @@ class factor extends \core\plugininfo\base {
         global $DB;
         return $DB->get_record('tool_mfa', ['id' => $factorid]);
     }
+
+    /**
+     * Sorts factors by state.
+     *
+     * @param array $factors The factors to sort.
+     * @param string $state The state to sort by.
+     * @return array $factors The sorted factors.
+     */
+    public static function sort_factors_by_state(array $factors, string $state): array {
+        usort($factors, function ($a, $b) use ($state) {
+            $statea = $a->get_state();
+            $stateb = $b->get_state();
+
+            if ($statea === $state && $stateb !== $state) {
+                return -1;  // $a comes before $b
+            }
+
+            if ($stateb === $state && $statea !== $state) {
+                return 1;   // $b comes before $a
+            }
+
+            return 0;       // they are the same, keep current order
+        });
+
+        return $factors;
+    }
 }
