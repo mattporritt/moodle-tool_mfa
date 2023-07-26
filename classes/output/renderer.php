@@ -587,6 +587,7 @@ class renderer extends \plugin_renderer_base {
         $alladitionalfactors = array_merge($additionalfactors, $disabledfactors);
         $hasadditionalfactors = $displaycount > 0;
         $authurl = new \moodle_url('/admin/tool/mfa/auth.php');
+        $form->set_display_vertical();
 
         $context = [
             'logintitle' => get_string('logintitle', 'factor_'.$factor->name),
